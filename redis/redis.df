@@ -1,7 +1,7 @@
 # Redis
 
 
-FROM ubuntu
+FROM stackbrew/ubuntu:saucy
 
 
 MAINTAINER Travis Johnson travis@spentry.net
