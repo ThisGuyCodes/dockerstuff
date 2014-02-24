@@ -1,0 +1,29 @@
+# Redis
+
+
+FROM ubuntu
+
+
+MAINTAINER Travis Johnson travis@spentry.net
+
+
+# Update
+RUN apt-get update
+RUN apt-get upgrade -y
+
+# Build utils
+RUN apt-get install build-essential -y
+
+# Get redis
+RUN curl --silent http://download.redis.io/releases/redis-2.8.6.tar.gz | tar -xzC /usr/local
+RUN mv /usr/local/redis-2.8.6 /usr/local/redis
+RUN make --directory /usr/local/redis
+RUN useradd --system redis
+
+# Get config
+RUN curl --silent https://raw.github.com/conslo/dockerstuff/master/redis/redis.conf > /usr/local/redis/redis.conf
+
+# Run command
+ENTRYPOINT ["/usr/local/redis/src/redis-server", "/usr/local/redis/redis.conf"]
+USER redis
+EXPOSE 6379
