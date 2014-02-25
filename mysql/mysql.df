@@ -1,0 +1,24 @@
+# MySQL
+
+FROM stackbrew/ubuntu:saucy
+
+MAINTAINER Travis Johnson travis@spentry.net
+
+# Add percona repo
+RUN apt-key adv --keyserver keys.gnupg.net --recv-keys 1C4CBDCDCD2EFD2A
+
+# Update
+RUN apt-get update
+RUN export DEBIAN_FRONTEND=noninteractive
+RUN apt-get upgrade -y -q
+
+# Get redis
+RUN apt-get install percona-server-server-5.6 -y
+
+# Get config
+RUN curl --silent https://raw.github.com/conslo/dockerstuff/master/mysql/my.cnf > /etc/mysql/my.cnf
+
+# Run command
+ENTRYPOINT ["service mysql start"]
+USER root
+EXPOSE 3306
